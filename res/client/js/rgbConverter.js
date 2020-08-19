@@ -1,9 +1,10 @@
 
-var saturationThreshold = 350;
+var saturationThreshold=100;
 
 export function setSaturationThreshold(sat){
     saturationThreshold = sat;
 }
+
 
 /**
  * converte il valore passato come parametro in tripla rgb proporzionale al valore

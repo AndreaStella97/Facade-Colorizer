@@ -7,7 +7,7 @@ import org.rythmengine.Rythm;
 
 public class Main {
     public static void main(String[] argv) throws Exception {
-        new ApplicationServer(8081, new WelcomeServlet(), new AnnotationsServlet()).start();
+        new ApplicationServer(8080, new WelcomeServlet(), new AnnotationsServlet()).start();
 
 
     }

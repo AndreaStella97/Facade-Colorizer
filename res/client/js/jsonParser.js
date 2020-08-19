@@ -11,6 +11,11 @@ export var radiators = new Array();
 export var windows = new Array();
 
 
+/**
+ * setta i vari elementi del condominio in base all'oggetto JSON
+ * @param jObj l'oggetto JSON
+ */
+
 export function parsing(jObj){
     jsonObj = jObj;
     setCategoriesId();

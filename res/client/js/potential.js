@@ -1,13 +1,13 @@
 import * as geometry from "./geometry.js";
 
-var repulsionConstant = 2000;
+var repulsionConstant;
 var tempMax=35;
 var tempMin = 5;
 var maxPotCost = 3;
 var minPotCost = 1/3;
 
-export function setRepulsionConstant(repConst){
-    repulsionConstant=repConst;
+export function setRepulsionConstant(rep){
+    repulsionConstant = rep;
 }
 
 /**
