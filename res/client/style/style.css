@@ -1,0 +1,32 @@
+h1 {
+    text-align: center;
+}
+
+
+#myCanvas {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin-left: -500px;
+    width: 500px;
+}
+
+#myImage {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    margin-left: -250px;
+    width: 500px;
+}
+
+
+#myRange {
+
+    position:relative;
+    top: 50%;
+    left:50%;
+    margin-left: -250px;
+    height: 100px;
+    width: 500px;
+}
+

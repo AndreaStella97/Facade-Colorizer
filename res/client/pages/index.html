@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Heat Map</title>
+    <link rel="stylesheet" type="text/css" href="res/client/style/style.css">
+
+</head>
+<body>
+<h1>Heat Map</h1>
+
+
+<div class="heatmapcontainer">
+    <img id="myImage">
+    <canvas id="myCanvas"></canvas>
+</div>
+
+
+<div class="slidecontainer">
+    <input type="range" min="1" max="12" value="1" class="slider" id="myRange">
+</div>
+
+
+
+</body>
+
+<script type="module" src="res/client/js/jsonParser.js"></script>
+<script type="module" src="res/client/js/potential.js"></script>
+<script type="module" src="res/client/js/rgbConverter.js"></script>
+<script type="module" src="res/client/js/geometry.js"></script>
+<script type="module" src="res/client/js/main.js"></script>
+
+
+</html>
