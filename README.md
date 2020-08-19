@@ -1,1 +1,1 @@
-# HeatMapServer
+# HeatMap
