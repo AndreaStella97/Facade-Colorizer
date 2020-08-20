@@ -1,10 +1,14 @@
 
-var saturationThreshold=100;
+var saturationThreshold;
+
+/**
+ * setta il valore della soglia di saturazione
+ * @param sat la nuova soglia di saturazione
+ */
 
 export function setSaturationThreshold(sat){
     saturationThreshold = sat;
 }
-
 
 /**
  * converte il valore passato come parametro in tripla rgb proporzionale al valore

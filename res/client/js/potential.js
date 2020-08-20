@@ -6,6 +6,11 @@ var tempMin = 5;
 var maxPotCost = 3;
 var minPotCost = 1/3;
 
+/**
+ * setta il valore della costante di repulsione
+ * @param rep la nuova costante di repulsione
+ */
+
 export function setRepulsionConstant(rep){
     repulsionConstant = rep;
 }

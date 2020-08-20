@@ -20,17 +20,7 @@ h1 {
 }
 
 
-#myRange {
-
-    position:relative;
-    top: 50%;
-    left:50%;
-    margin-left: -250px;
-    height: 100px;
-    width: 500px;
-}
-#myRangeSaturation {
-
+#rangeTime {
     position:relative;
     top: 50%;
     left:50%;
@@ -39,21 +29,23 @@ h1 {
     width: 500px;
 }
 
-#myRangeRepConst {
-
+#settings{
     position:relative;
     top: 50%;
     left:50%;
-    margin-left: -250px;
+    margin-top: -500px;
+    margin-left: 500px;
     height: 100px;
     width: 500px;
 }
-
-#saveButton {
+#saveButton{
     position: relative;
-    top: 50%;
-    left:50%;
-    margin-left: -250px;
-
+    margin-top: 30px;
 }
+
+#buttonImage{
+    height: 50px;
+}
+
+
 

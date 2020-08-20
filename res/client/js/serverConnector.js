@@ -1,5 +1,5 @@
 import * as parser from "./jsonParser.js";
-import * as canvas from "./main.js";
+import * as canvas from "./canvas.js";
 import * as inputTypes from "./inputTypes.js"
 
 /**
@@ -13,16 +13,13 @@ httpReq.onreadystatechange = function() {
         var jsonObj = JSON.parse(httpReq.responseText);
         parser.parsing(jsonObj);
         inputTypes.setDefaultSettings();
-        inputTypes.setRangeAction();
-        inputTypes.setRangeSaturationAction();
-        inputTypes.setRangeRepConstAction();
-        inputTypes.setSaveButtonAction();
+        inputTypes.setInputTypesActions();
         canvas.setImage();
         canvas.setCanvas();
         canvas.setRect();
         canvas.calcRoomsDataColors();
-        canvas.setRoomsDataColors();
-        canvas.setText();
+        canvas.setRoomsDataColors(inputTypes.rangeTime.value -1);
+        canvas.setText(inputTypes.rangeTime.value -1);
     }
 };
 
