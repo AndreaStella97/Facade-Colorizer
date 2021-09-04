@@ -2,84 +2,152 @@ import * as parser from "./jsonParser.js";
 import * as potential from "./potential.js";
 import * as rgbConverter from "./rgbConverter.js";
 
+
 export var myCanvas = document.getElementById("myCanvas");
 export var context = myCanvas.getContext("2d");
+var pixelPartition;
+var transparency;
+var displayText = true;
 
+
+/**
+ * setta il partizionamento dei pixel
+ * @param pixPart il partizionamento
+ */
+export function setPixelPartition(pixPart){
+    pixelPartition=pixPart;
+}
+
+/**
+ * setta la costante di trasparenza
+ * @param transp la costante di trasparenza
+ */
+
+export function setTransparency(transp){
+    transparency=255-transp;
+}
+
+/**
+ * setta il boolean che specifica la visibilita del testo con le temperature
+ * @param displayBoolean il boolean
+ */
+
+export function setDisplayText(displayBoolean){
+    displayText = displayBoolean;
+}
 
 /**
  * aggiunge l'immagine di background selezionata
  * @param jsonObj l'oggetto JSON che contiene tutte le annotazioni
  */
 
-export function setImage() {
-    var img = document.getElementById("myImage");
+export function setFlatImage() {
+    var img = document.getElementById("imageFlat");
     img.setAttribute("src", parser.getImagePath());
 }
 
 /**
  * setta altezza e larghezza del canvas
- * @param jsonObj l'oggetto JSON che contiene tutte le annotazioni
  */
 
-export function setCanvas(jsonObj) {
+export function setCanvas() {
     var imageDimension = parser.getImageDimension();
     myCanvas.width = imageDimension.width;
     myCanvas.height = imageDimension.height;
 }
 
 /**
- * crea i rettangoli delle dimensioni delle camere
+ * setta il testo con le varie temperature ricevute in real-time
  */
 
-export function setRect() {
+function setRealTimeTemperatureText(){
     for(var i=0; i<parser.rooms.length; i++){
-        context.beginPath();
-        context.fillRect(parser.rooms[i].xtl, parser.rooms[i].ytl, parser.rooms[i].width, parser.rooms[i].height);
-        context.stroke();
-    }
-}
-
-/**
- * setta il testo con le varie temperature
- */
-
-export function setText(tempIndex){
-    for(var i=0; i<parser.rooms.length; i++){
-        context.font = "40px Arial";
+        context.font = "25px Arial";
         context.textAlign = "center";
-        context.fillText( parser.rooms[i].temperatures[tempIndex]+"°",parser.rooms[i].xtl+parser.rooms[i].width/2, parser.rooms[i].ytl+ parser.rooms[i].height/2 );
+        context.fillText( parser.rooms[i].temperature+"°",parser.rooms[i].xtl+parser.rooms[i].width/2, parser.rooms[i].ytl+ parser.rooms[i].height/2 );
+    }
+}
+
+
+/**
+ * setta il colore dei vari rettangoli date le temperature ricevute in real-time
+ */
+
+
+function setRealTimeTemperatureColor(){
+    for(var i=0; i<parser.rooms.length; i++){
+        var imageData = context.getImageData(parser.rooms[i].xtl,parser.rooms[i].ytl,parser.rooms[i].width,parser.rooms[i].height);
+        var pixels = imageData.data;
+        for(var k=0; k<pixels.length; k+=4*pixelPartition){
+            var numPixel = k/4;
+            var pixelX = numPixel%parser.rooms[i].width;
+            var pixelY = Math.ceil(numPixel/parser.rooms[i].width);
+            var pot = potential.getPotential(pixelX,pixelY,parser.rooms[i]);
+            var rgb=rgbConverter.numToRgb(pot);
+            for(var j=0; j<4*pixelPartition;j+=4){
+                pixels[k+j]= rgb.r;
+                pixels[k+j+1]= rgb.g;
+                pixels[k+j+2]= rgb.b;
+                pixels[k+j+3]=transparency;
+            }
+        }
+        context.putImageData(imageData,parser.rooms[i].xtl,parser.rooms[i].ytl);
     }
 }
 
 /**
- * calcola i dati dei colori per ogni temperatura e stanza
+ * setta colore e testo con le temperature ricevute in real-time
  */
 
-export function calcRoomsDataColors(){
-   for(var k=0; k<parser.rooms.length;k++){
-       for(var j=0; j<parser.rooms[k].temperatures.length;j++){
-           var imageData = context.getImageData(parser.rooms[k].xtl,parser.rooms[k].ytl,parser.rooms[k].width,parser.rooms[k].height);
-           var pixels = imageData.data;
-           for(var i = 0; i<pixels.length; i+=4){
-               var numPixel = i/4+4;
-               var pixelX = numPixel%parser.rooms[k].width;
-               var pixelY = Math.ceil(numPixel/parser.rooms[k].width);
-               var rgb=rgbConverter.numToRgb(potential.getPotential(pixelX, pixelY,parser.rooms[k], parser.getRadiatorsInsideRoom(parser.rooms[k].roomId), parser.getWindowsInsideRoom(parser.rooms[k].roomId),parser.rooms[k].temperatures[j]));
-               pixels[i]=rgb.r;
-               pixels[i+1]=rgb.g;
-               pixels[i+2]=rgb.b;
-               pixels[i+3]=150;
-           }
-           parser.rooms[k].colorsData[j] = pixels;
-       }
-   }
+export function setRealTimeImage(){
+    setRealTimeTemperatureColor();
+    if(displayText){
+        setRealTimeTemperatureText();
+    }
+
 }
+
+/**
+ * calcola i dati dei colori per ogni temperatura e stanza date le temperature ricevute in time-lapse
+ */
+
+export function calcTimeLapseTemperaturesColors(){
+    const start = Date.now();
+    for(var t=0; t<parser.rooms[0].timeLapseTemperatures.length;t++){
+        for(var s=0; s<parser.rooms.length; s++){
+            parser.rooms[s].temperature = parser.rooms[s].timeLapseTemperatures[t];
+        }
+        for(var i=0; i<parser.rooms.length; i++){
+            var imageData = context.getImageData(parser.rooms[i].xtl,parser.rooms[i].ytl,parser.rooms[i].width,parser.rooms[i].height);
+            var pixels = imageData.data;
+            for(var k=0; k<pixels.length; k+=4*pixelPartition){
+                var numPixel = k/4;
+                var pixelX = numPixel%parser.rooms[i].width;
+                var pixelY = Math.ceil(numPixel/parser.rooms[i].width);
+                var pot = potential.getPotential(pixelX,pixelY,parser.rooms[i]);
+                var rgb=rgbConverter.numToRgb(pot);
+                for(var j=0; j<4*pixelPartition;j+=4){
+                    pixels[k+j]= rgb.r;
+                    pixels[k+j+1]= rgb.g;
+                    pixels[k+j+2]= rgb.b;
+                    pixels[k+j+3]=transparency;
+                }
+            }
+            parser.rooms[i].colorsData[t] = pixels;
+        }
+    }
+    const loadingTime = new Date(Date.now()-start);
+    console.log("frame totali: "+parser.rooms[0].timeLapseTemperatures.length);
+    console.log("tempo di caricamento: "+loadingTime.getUTCHours()+" ore " + loadingTime.getUTCMinutes() +" minuti " + loadingTime.getUTCSeconds()+ " secondi ");
+}
+
 
 /**
  * setta i colori di ogni stanza in base ai dati dei colori salvati
+ * @param tempIndex l'indice corrispondente ad una data temperatura
  */
 
-export function setRoomsDataColors(tempIndex){
+function setTimeLapseTemperaturesColors(tempIndex){
     for(var i=0; i<parser.rooms.length;i++){
         var imageData = context.getImageData(parser.rooms[i].xtl,parser.rooms[i].ytl,parser.rooms[i].width,parser.rooms[i].height);
         imageData.data.set(parser.rooms[i].colorsData[tempIndex]);
@@ -88,25 +156,34 @@ export function setRoomsDataColors(tempIndex){
 }
 
 /**
- * setta i colori di ogni stanza per avere un'anteprima veloce (non tiene conto
- * dei dati dei colori salvati)
+ * setta il testo con le varie temperature ricevute in time-lapse
+ * @param tempIndex l'indice corrispondente ad una data temperatura
  */
 
-export function setColorPreview(tempIndex){
-    for(var k=0; k<parser.rooms.length; k++){
-        var imageData = context.getImageData(parser.rooms[k].xtl,parser.rooms[k].ytl,parser.rooms[k].width,parser.rooms[k].height);
-        var pixels = imageData.data;
-        for(var i = 0; i<pixels.length; i+=4){
-            var numPixel = i/4+4;
-            var pixelX = numPixel%parser.rooms[k].width;
-            var pixelY = Math.ceil(numPixel/parser.rooms[k].width);
-            var rgb=rgbConverter.numToRgb(potential.getPotential(pixelX, pixelY,parser.rooms[k], parser.getRadiatorsInsideRoom(parser.rooms[k].roomId), parser.getWindowsInsideRoom(parser.rooms[k].roomId),parser.rooms[k].temperatures[tempIndex]));
-            pixels[i]=rgb.r;
-            pixels[i+1]=rgb.g;
-            pixels[i+2]=rgb.b;
-            pixels[i+3]=150;
-        }
-        context.putImageData(imageData,parser.rooms[k].xtl,parser.rooms[k].ytl);
+function setTimeLapseTemperaturesText(tempIndex){
+    for(var i=0; i<parser.rooms.length; i++){
+        context.font = "25px Arial";
+        context.textAlign = "center";
+        context.fillText( parser.rooms[i].timeLapseTemperatures[tempIndex]+"°",parser.rooms[i].xtl+parser.rooms[i].width/2, parser.rooms[i].ytl+ parser.rooms[i].height/2 );
     }
 }
+
+/**
+ * setta colore e testo con le temperature ricevute in time-lapse
+ * @param tempIndex l'indice corrispondente ad una data temperatura
+ */
+
+export function setTimeLapseImages(tempIndex){
+    setTimeLapseTemperaturesColors(tempIndex);
+    if(displayText){
+        setTimeLapseTemperaturesText(tempIndex);
+    }
+}
+
+
+
+
+
+
+
 

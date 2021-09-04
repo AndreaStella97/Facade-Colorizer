@@ -1,51 +1,227 @@
-h1 {
-    text-align: center;
+html,body{
+    height: 100%;
 }
 
+body{
+    background-color: #F4F4F4;
+    margin: 0px;
+}
+
+.wrap{
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -45px;
+}
+
+#push{
+    height: 100px;
+}
+
+#footer{
+    background-color: #333333;
+    height: 45px;
+}
+
+
+.title-container{
+    background-color: #252525;
+    height: 90px;
+    margin: 0px;
+}
+
+#imageLogo {
+    margin-top: 10px;
+    margin-left: 30px;
+    width:150px;
+}
 
 #myCanvas {
     position: relative;
-    top: 50%;
     left: 50%;
-    margin-left: -500px;
-    width: 500px;
+    margin-bottom: 10px;
+    margin-left: -415px;
+    width: 400px;
 }
 
-#myImage {
+#imageFlat {
     position: relative;
-    top: 50%;
     left: 50%;
-    margin-left: -250px;
-    width: 500px;
+    margin-top: 50px;
+    margin-left: -200px;
+    width: 400px;
+    border:solid 10px #333333;
+    box-shadow: 5px 5px 15px 4px #999;
 }
 
 
-#rangeTime {
-    position:relative;
-    top: 50%;
-    left:50%;
-    margin-left: -250px;
-    height: 100px;
-    width: 500px;
-}
-
-#settings{
-    position:relative;
-    top: 50%;
-    left:50%;
-    margin-top: -500px;
-    margin-left: 500px;
-    height: 100px;
-    width: 500px;
-}
-#saveButton{
+.player {
+    display: none;
+    background-color: #333333;
     position: relative;
-    margin-top: 30px;
+    left: 50%;
+    margin-top: 50px;
+    margin-left: -250px;
+    box-shadow: 5px 5px 15px 4px #999;
+    width: 500px;
 }
 
-#buttonImage{
+
+.btnPlayerContainer{
+    position: relative;
+    left: 50%;
+    margin-left: -105px;
+    width: 210px;
+}
+
+.btnPlayer{
+    width: 50px;
     height: 50px;
+    margin-top:10px;
+    margin-right: 10px;
+    margin-left: 10px;
 }
 
+#btnStop{
+    float:left;
+}
 
+#btnFast{
+    float: right;
+}
+
+#rangeTimeLapse {
+    position: relative;
+    margin-left: 50px;
+    margin-bottom: 10px;
+
+    width: 400px;
+}
+
+#labelDate {
+    position: relative;
+    color: white;
+    margin-left: 0%;
+    padding-left: 20px;
+}
+
+.imageLoading{
+    height: 30px;
+    margin: 5px;
+}
+
+.dropdown-container {
+    background-color: #333333;
+}
+
+.dropdown {
+    display: inline-block;
+}
+
+.dropbtn {
+    background-color: #252525;
+    color: white;
+    padding: 14px;
+    font-size: 14px;
+    border: none;
+}
+
+.btnModality {
+    display: none;
+    float:right;
+    background-color: #252525;
+    color: white;
+    padding: 14px;
+    font-size: 14px;
+    border: solid 1px white;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: lightgrey;
+    min-width: 150px;
+    z-index: 1;
+}
+
+.setting-item {
+    border-bottom-width: 3px;
+    border-bottom-color: white;
+    border-bottom-style: solid;
+    padding: 1px 12px;
+    font-size: 14px;
+    min-height: 100px;
+}
+
+#samplesItem {
+    display: none;
+}
+
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {background-color: grey;}
+#btnRealTime:active {background-color: grey;}
+
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
 

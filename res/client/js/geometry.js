@@ -47,7 +47,6 @@ export function getDistance(x1,y1,x2,y2) {
  */
 
 export function getClosestPoint(x1,y1,x2,y2,a,b){
-
     var coordX;
     var coordY;
     a>=x2 ? coordX = x2 : null;
@@ -74,6 +73,7 @@ export function getClosestPoint(x1,y1,x2,y2,a,b){
 export function getClosestInternalPoint(x1,y1,x2,y2,a,b) {
     var sideX;
     var sideY;
+
     (a-x1)>(x2-x1)/2 ? sideX = x2 : sideX = x1;
     (b-y1)>(y2-y1)/2 ? sideY = y2 : sideY = y1;
     var coordX;
@@ -88,4 +88,16 @@ export function getClosestInternalPoint(x1,y1,x2,y2,a,b) {
 
     var coordinates=new Array(coordX,coordY);
     return coordinates;
+}
+
+/**
+ * ritorna la diagonale data altezza e larghezza di un rettangolo
+ * @param width larghezza
+ * @param height altezza
+ * @returns {number} diagonale
+ */
+
+export function getDiagonal(width, height){
+    return Math.sqrt(Math.pow(width,2)+Math.pow(height,2));
+
 }

@@ -3,45 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Heat Map</title>
+    <title>Facade Colorizer</title>
     <link rel="stylesheet" type="text/css" href="res/client/style/style.css">
-
 </head>
 <body>
-<h1>Heat Map</h1>
 
+<div class="wrap">
+    <div class = "title-container">
+        <img src="res/client/images/IMG_1559.png" id="imageLogo">
+    </div>
+    <div class = "dropdown-container">
+        <div class="dropdown" id="dropDownSettings">
+            <button class="dropbtn" id="btnSettings" >Impostazioni</button>
+            <div class="dropdown-content">
+                <div class="setting-item">
+                    <h3 class="setting-title">Soglia di saturazione</h3>
+                    <h4>freddo <input type="range" min="10" max="1000" value="500" class="range" id="rangeSaturation"> caldo</h4>
+                </div>
+                <div class="setting-item">
+                    <h3 class="setting-title">Effetto superfici fredde </h3>
+                    <h4>min <input type="range" min="1" max="10000" value="5000" class="range" id="rangeColdEffect"> max</h4>
+                </div>
+                <div class="setting-item">
+                    <h3 class="setting-title">Effetto inter-stanza </h3>
+                    <h4>min <input type="range" min="0.1" max="1" value="0.5" step="0.1" class="range" id="rangeInterRoomEffect"> max</h4>
+                </div>
+                <div class="setting-item">
+                    <h3 class="setting-title">Trasparenza </h3>
+                    <h4>min <input type="range" min="0" max="255" value="100" class="range" id="rangeTransparency"> max</h4>
+                </div>
+                <div class="setting-item">
+                    <h3 class="setting-title">Risoluzione </h3>
+                    <h4>min <input type="range" min="1" max="8" value="3" class="range" id="rangeResolution"> max</h4>
+                </div>
+                <div class="setting-item">
+                    <h3 class="setting-title">Mostra le temperature</h3>
+                    <label class="switch">
+                        <input type="checkbox" id="checkTempText" checked="true">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <img style="display:none" src="res/client/images/loadingGif.gif" class ="imageLoading" id="loadingSettings">
+            </div>
+        </div>
+        <div class = "dropdown" id="dropDownTimeLapse">
+            <button class="dropbtn" id="btnTimeLapse">Time-Lapse</button>
+            <div class = "dropdown-content">
+                <form onsubmit="return false;">
+                    <div class="setting-item">
+                        <h3 class="setting-title">Data di inizio</h3>
+                        <input type="datetime-local" step = "600" name="startDateTime" id="startDateTime" required>
 
+                    </div>
+                    <div class="setting-item">
+                        <h3 class="setting-title">Data di fine</h3>
+                        <input type="datetime-local" step = "600" name="endDateTime" id="endDateTime" required>
+                    </div>
+                    <div class="setting-item" id="samplesItem">
+                        <h3 class="setting-title">Campionamento</h3>
+                        <input type="number" min="1" name="samples" id="samples"  required>
+                        <label id="samplesLabel"></label>
+                    </div>
+                    <div>
+                        <input type="submit" value="Invia" id="btnSend">
+                    </div>
+                    <img style="display:none" src="res/client/images/loadingGif.gif" class ="imageLoading" id="loadingTimeLapse">
 
-<img id="myImage">
-<canvas id="myCanvas"></canvas>
-<div>
-    <input type="range" min="1" max="12" value="1" class="slider" id="rangeTime">
+                </form>
+            </div>
+        </div>
+        <button class="btnModality" id="btnRealTimeModality">Torna a modalita Real-Time</button>
+        <button class="btnModality" id="btnTimeLapseModality">Torna a modalita Time-Lapse</button>
+    </div>
+
+    <div class="flatContainer">
+        <img id="imageFlat">
+        <canvas id="myCanvas"></canvas>
+    </div>
+    <div class="player" id="player">
+        <div class="btnPlayerContainer">
+            <input type="image" src="res/client/images/playButton.png" class="btnPlayer" id = "btnPlay">
+            <input type="image" src="res/client/images/stopButton.png" class="btnPlayer" id = "btnStop">
+            <input type="image" src="res/client/images/fastButton.png" class="btnPlayer" id = "btnFast">
+        </div>
+        <div>
+            <label display="none" id="labelDate"></label>
+        </div>
+        <input type="range" min="1" value="1" step="1" class="range" id="rangeTimeLapse">
+
+    </div>
+
 </div>
 
-<div id="settings">
-    <h2>Impostazioni</h2>
-    <div>
-        <h3>Soglia di saturazione</h3>
-        <input type="range" min="10" max="1000" value="10" class="slider" id="rangeSaturation">
-    </div>
-    <div>
-        <h3>Costante di repulsione </h3>
-        <input type="range" min="1" max="10000" value="10" class="slider" id="rangeRepConst">
-    </div>
-    <div>
-        <button id="saveButton">Salva</button>
-    </div>
-    <div>
-        <img style="display:none" src="https://static.wixstatic.com/media/69e4f9_4a6dadd0cd304c92b530bd1ae1ddcb58~mv2.gif" id="buttonImage">
-    </div>
+<div id="push">
+
 </div>
 
 
+<div id = "footer">
 
-
-
-
-
+</div>
 
 </body>
 
@@ -49,7 +110,11 @@
 <script type="module" src="res/client/js/potential.js"></script>
 <script type="module" src="res/client/js/rgbConverter.js"></script>
 <script type="module" src="res/client/js/geometry.js"></script>
-<script type="module" src="res/client/js/inputTypes.js"></script>
+<script type="module" src="res/client/js/renderingSettings.js"></script>
+<script type="module" src="res/client/js/timeLapseSettings.js"></script>
+<script type="module" src="res/client/js/timeLapsePlayer.js"></script>
+<script type="module" src="res/client/js/buttonModality.js"></script>
+<script type="module" src="res/client/js/loading.js"></script>
 <script type="module" src="res/client/js/canvas.js"></script>
 <script type="module" src="res/client/js/serverConnector.js"></script>
 

@@ -10,12 +10,16 @@ public class ApplicationServer {
     private int port;
     private Servlet welcomeServlet;
     private Servlet annotationsServlet;
+    private Servlet realTimeTemperaturesServlet;
+    private Servlet timeLapseTemperaturesServlet;
     private Server server;
 
-    public ApplicationServer(int port, Servlet welcomeServlet, Servlet annotationsServlet ) {
+    public ApplicationServer(int port, Servlet welcomeServlet, Servlet annotationsServlet, Servlet realTimeTemperaturesServlet, Servlet timeLapseTemperaturesServlet) {
         this.port = port;
         this.welcomeServlet = welcomeServlet;
         this.annotationsServlet = annotationsServlet;
+        this.realTimeTemperaturesServlet = realTimeTemperaturesServlet;
+        this.timeLapseTemperaturesServlet = timeLapseTemperaturesServlet;
     }
 
     public void start() throws Exception {
@@ -23,6 +27,9 @@ public class ApplicationServer {
         ServletContextHandler handler = new ServletContextHandler();
         handler.addServlet(new ServletHolder(welcomeServlet), "/index");
         handler.addServlet(new ServletHolder(annotationsServlet), "/annotations");
+        handler.addServlet(new ServletHolder(realTimeTemperaturesServlet), "/values/last");
+        handler.addServlet(new ServletHolder(timeLapseTemperaturesServlet), "/values/frames");
+
         addStaticFileServing(handler);
         server.setHandler(handler);
         server.start();

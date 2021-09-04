@@ -17,10 +17,9 @@ export function setSaturationThreshold(sat){
  */
 
 export function numToRgb (h) {
+
     var r, g, b;
-
     h>saturationThreshold?h=saturationThreshold:null;
-
     if(h<=saturationThreshold/6){
         r=255;
         g=(-255*h/(saturationThreshold/6)) + 255;
@@ -46,6 +45,5 @@ export function numToRgb (h) {
         g=0;
         b=(-105/(saturationThreshold/6))*(h-(saturationThreshold*5/6)) +255;
     }
-
     return { r: r, g: g, b: b };
 }
